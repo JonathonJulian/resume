@@ -20,18 +20,19 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
     'resume-worker-01    Ready     worker  2y     v1.26.0',
     'resume-worker-02    Ready     worker  2y     v1.26.0',
     '',
-    '❯ kubectl get pods',
-    'No resources found in default namespace.',
+    '❯ helm list',
+    'No releases found in default namespace.',
     '',
-    '❯ kubectl create -f jonathon-resume.yaml',
-    'deployment.apps/jonathon-fritz-resume created',
+    '❯ helm install jonathon-resume ./resume-chart',
+    'NAME: jonathon-resume',
+    'LAST DEPLOYED: Tue Mar 04 14:35:21 2025',
+    'NAMESPACE: default',
+    'STATUS: deployed',
+    'REVISION: 1',
     '',
-    '❯ kubectl describe pod jonathon-fritz-resume-6f7d9c7b8d-x2zs1',
-    'Name:         jonathon-fritz-resume-6f7d9c7b8d-x2zs1',
-    'Namespace:    default',
-    'Status:       Running',
-    'IP:           10.42.1.5',
-    'Controlled By: ReplicaSet/jonathon-fritz-resume-6f7d9c7b8d',
+    '❯ kubectl get pod -l app=jonathon-resume',
+    'NAME                                 READY   STATUS    RESTARTS   AGE',
+    'jonathon-fritz-resume-6f7d9c7b8d-x2zs1   1/1     Running   0          42s',
     '',
     '❯ kubectl port-forward jonathon-fritz-resume-6f7d9c7b8d-x2zs1 8080:80',
     'Forwarding from 127.0.0.1:8080 -> 80',
@@ -166,7 +167,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="w-full max-w-4xl bg-black text-green-500 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn">
+      <div className="w-full max-w-[860px] bg-black text-green-500 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn">
         <div className="terminal-header flex items-center justify-between p-2 sm:p-3 bg-gray-900 border-b border-gray-800">
           <div className="flex space-x-2">
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
@@ -179,7 +180,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
         <div
           ref={terminalContentRef}
-          className="terminal-content h-80 sm:h-96 md:h-[420px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
+          className="terminal-content h-[294px] sm:h-[368px] md:h-[368px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
         >
           {/* Display the prompt line only once at the top */}
           <div className="text-blue-400 mb-1">
