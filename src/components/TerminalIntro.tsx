@@ -166,7 +166,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="w-full max-w-3xl bg-black text-green-500 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn">
+      <div className="w-full max-w-4xl bg-black text-green-500 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn">
         <div className="terminal-header flex items-center justify-between p-2 sm:p-3 bg-gray-900 border-b border-gray-800">
           <div className="flex space-x-2">
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
@@ -179,7 +179,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
         <div
           ref={terminalContentRef}
-          className="terminal-content h-64 sm:h-80 overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
+          className="terminal-content h-80 sm:h-96 md:h-[420px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
         >
           {/* Display the prompt line only once at the top */}
           <div className="text-blue-400 mb-1">
