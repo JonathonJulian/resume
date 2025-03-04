@@ -131,7 +131,7 @@ const Header: React.FC<HeaderProps> = ({
         )}
 
         {/* Name and Title */}
-        <div className="animate-fadeIn" style={{ textAlign: 'center', margin: '0 0 8px 0' }}>
+        <div className="animate-fadeIn" style={{ textAlign: 'center', margin: '0 0 20px 0' }}>
           <h1
             style={{
               fontSize: '2.8rem',
@@ -161,7 +161,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Skill badges */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '15px', margin: '0 0 14px 0' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '15px', margin: '0 0 24px 0' }}>
           <span
             className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
             style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.1s' }}
@@ -180,11 +180,6 @@ const Header: React.FC<HeaderProps> = ({
           >
             <span>Leadership</span>
           </span>
-        </div>
-
-        {/* Summary */}
-        <div className="text-gray-300 text-base max-w-4xl mx-auto text-center mb-4 animate-fadeIn" style={{ animationDelay: '0.4s' }}>
-          {summary}
         </div>
 
         {/* Divider */}
