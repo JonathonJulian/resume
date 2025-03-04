@@ -233,7 +233,7 @@ function App() {
       {
         category: "Blockchain & Web3",
         skills: [
-          "Ethereum", "Arbitrum", "Optimism", "ZkStack", "Solana","Layer 2/3", "Oracles", "Geth", "Reth", "Erigon", "Polygon", "BSC", "Blockscout", "Smart Contracts", "Mempool Analysis", "RPC Infrastructure", "Transaction Monitoring"
+          "Ethereum", "Arbitrum", "Optimism", "ZkStack", "Solana","Layer 2/3", "Oracles", "Geth", "Reth", "EVM","Foundry","Hard Hat", "Blockscout", "Smart Contracts", "Mempool Analysis", "RPC Infrastructure", "Transaction Monitoring"
         ]
       },
       {
