@@ -92,6 +92,18 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
     fetchContributions();
   }, [username]);
 
+  // Get color based on contribution level - Grok theme colors
+  const getLevelColor = (level: number): string => {
+    switch (level) {
+      case 0: return '#1c1c1c'; // Background/empty
+      case 1: return '#252525'; // Lightest contribution
+      case 2: return '#2d3748'; // Light contribution
+      case 3: return '#3a4a5c'; // Medium contribution
+      case 4: return '#4a5568'; // Heavy contribution
+      default: return '#1c1c1c';
+    }
+  };
+
   // Function to render the contribution graph
   const renderContributionGraph = () => {
     if (!stats) return null;
@@ -101,18 +113,6 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
     const weekCount = stats.weeks.length;
     const width = (cellSize + cellSpacing) * weekCount + 20; // Extra padding
     const height = (cellSize + cellSpacing) * 7 + 20; // 7 days per week + padding
-
-    // Color levels for contribution cells - using GitHub's actual colors
-    const getLevelColor = (level: number) => {
-      switch(level) {
-        case 0: return '#161b22';
-        case 1: return '#0e4429';
-        case 2: return '#006d32';
-        case 3: return '#26a641';
-        case 4: return '#39d353';
-        default: return '#161b22';
-      }
-    };
 
     // Month labels
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -170,15 +170,15 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
   const renderOrganizations = () => {
     return (
       <div className="organizations mt-4 flex flex-wrap gap-2">
-        <div className="org-badge flex items-center bg-gray-800 rounded-full px-3 py-1">
+        <div className="org-badge flex items-center bg-[#252525] border border-[#333] rounded-full px-3 py-1">
           <img src="https://avatars.githubusercontent.com/u/24852023" alt="Blocknative" className="w-5 h-5 rounded-full mr-2" />
           <span className="text-sm">@blocknative</span>
         </div>
-        <div className="org-badge flex items-center bg-gray-800 rounded-full px-3 py-1">
+        <div className="org-badge flex items-center bg-[#252525] border border-[#333] rounded-full px-3 py-1">
           <img src="https://avatars.githubusercontent.com/u/11527915" alt="5dlabs" className="w-5 h-5 rounded-full mr-2" />
           <span className="text-sm">@5dlabs</span>
         </div>
-        <div className="org-badge flex items-center bg-gray-800 rounded-full px-3 py-1">
+        <div className="org-badge flex items-center bg-[#252525] border border-[#333] rounded-full px-3 py-1">
           <img src="https://avatars.githubusercontent.com/u/73455216" alt="latitudesh" className="w-5 h-5 rounded-full mr-2" />
           <span className="text-sm">@latitudesh</span>
         </div>
@@ -191,10 +191,10 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
   }
 
   return (
-    <section className="rounded-lg overflow-hidden bg-[#0d1117] border border-gray-800">
-      <div className="px-4 py-3 bg-[#161b22] border-b border-gray-800">
+    <section className="rounded-lg overflow-hidden bg-[#1c1c1c] border border-[#2a2a2a]">
+      <div className="px-5 py-4 bg-[#1e1e1e] border-b border-[#2a2a2a]">
         <h2 className="text-lg font-semibold text-white flex items-center">
-          <svg className="w-5 h-5 mr-2 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 mr-2 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
             <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-1.032-.014-1.873-2.782.605-3.369-1.343-3.369-1.343-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.087 2.91.831.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.097-2.646 0 0 .84-.268 2.75 1.026A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.026 2.747-1.026.546 1.376.202 2.394.1 2.646.64.699 1.026 1.591 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.915.678 1.846 0 1.332-.012 2.407-.012 2.734 0 .267.18.577.688.48 3.97-1.325 6.833-5.07 6.833-9.487C22 6.477 17.522 2 12 2z" clipRule="evenodd" />
           </svg>
           GitHub Activity
@@ -204,15 +204,15 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
       <div className="p-4">
         {loading ? (
           <div className="flex flex-col items-center justify-center p-4">
-            <div className="h-8 w-8 border-4 border-t-gray-200 border-gray-700 rounded-full animate-spin"></div>
-            <p className="text-gray-400 mt-3">Loading GitHub contributions...</p>
+            <div className="h-8 w-8 border-4 border-t-gray-300 border-[#333] rounded-full animate-spin"></div>
+            <p className="text-gray-400 mt-2">Loading GitHub contributions...</p>
           </div>
         ) : error ? (
-          <div className="text-red-400 p-4 text-center">
-            <p>{error}</p>
+          <div className="p-3 text-center">
+            <p className="text-red-400 mb-3">{error}</p>
             <button
-              className="mt-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded"
               onClick={() => window.location.reload()}
+              className="px-3 py-1.5 bg-[#2d3748] hover:bg-[#3a4a5c] text-white rounded border border-[#3a4a5c] transition-colors"
             >
               Retry
             </button>
@@ -225,19 +225,19 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
                   href={`https://github.com/${username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 flex items-center"
+                  className="text-[#4a5568] hover:text-[#5a6b7c] flex items-center"
                 >
                   @{username}
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>
-                <div className="text-base text-white font-semibold">
+                <div className="text-base text-gray-300 font-semibold">
                   {yearlyContributions.toLocaleString()} contributions in the last year
                 </div>
               </div>
 
-              <div className="contributions-calendar bg-[#0d1117] p-3 rounded overflow-x-auto">
+              <div className="contributions-calendar bg-[#1c1c1c] p-3 rounded overflow-x-auto">
                 {renderContributionGraph()}
                 <div className="mt-2 flex items-center justify-end text-xs text-gray-500 pt-1">
                   <span>Less</span>
@@ -246,11 +246,7 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
                       <div
                         key={level}
                         className="w-3 h-3 mx-0.5 rounded-sm"
-                        style={{ backgroundColor: level === 0 ? '#161b22' :
-                                              level === 1 ? '#0e4429' :
-                                              level === 2 ? '#006d32' :
-                                              level === 3 ? '#26a641' :
-                                              '#39d353' }}
+                        style={{ backgroundColor: getLevelColor(level) }}
                       />
                     ))}
                   </div>

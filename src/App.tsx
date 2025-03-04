@@ -32,9 +32,9 @@ function App() {
 
   const [resumeData] = useState({
     name: "Jonathon Fritz",
-    title: "Blockchain Infrastructure Leader & Web3 Innovator",
+    title: "Blockchain Infrastructure Specialist & Leader",
     profileImage: "",
-    summary: "Innovative Blockchain Infrastructure Leader with extensive experience in blockchain infrastructure, DevOps, and software engineering. Specialized in web3 technologies, cloud infrastructure, and building scalable solutions. Proven leadership abilities from team lead to CTO roles.",
+    summary: "Seasoned pro in building and scaling blockchain infrastructure, from bare-metal Kubernetes to web3 ecosystems. I fuse hands-on platform and software engineering with proven leadership—driving impactful solutions as an individual contributor or team lead.",
     showProjects: false,
     experiences: [
       {
@@ -42,7 +42,7 @@ function App() {
         position: "Site Reliability Engineer",
         startDate: "May 2023",
         endDate: "Present",
-        description: "Programmable web3 infrastructure for builders and searchers.",
+        description: "On-chain gas estimation infrastructure for Web3.",
         titleColor: "text-job-sre",
         achievements: [
           "Led strategic transformation from mixed systemd/unikernel architecture to containerized infrastructure and eventually full Kubernetes adoption",
@@ -77,7 +77,7 @@ function App() {
         titleColor: "text-job-head",
         achievements: [
           "Led successful migration from EC2/Docker Compose to GitOps with Kubernetes and ArgoCD across 16 global regions, significantly reducing operational costs",
-          "Managed infrastructure serving over 1 billion daily requests through the portal application across 17 regional GKE clusters",
+          "Managed infrastructure serving over 1 billion daily requests through the portal application across 17 regional EKS clusters",
           "Orchestrated operations of 50+ blockchain clients including validators, seeds, and archival nodes for Ethereum, Polygon, BSC",
           "Led migration from DataDog to VictoriaMetrics/Loki/Grafana, drastically reducing observability costs",
           "Implemented comprehensive automation for node operations including key management, staking, and auto-upgrades",
@@ -194,7 +194,7 @@ function App() {
     educations: [
       {
         institution: "Hack Reactor",
-        degree: "Certificate",
+        degree: "",
         field: "Advanced Software Engineering Immersive Program",
         startDate: "2016",
         endDate: "2016",
@@ -206,7 +206,7 @@ function App() {
       },
       {
         institution: "VMware",
-        degree: "Certification",
+        degree: "",
         field: "VMware Certified Professional 5 – Data Center Virtualization (VCP5-DCV)",
         startDate: "2015",
         endDate: "2015",
@@ -214,7 +214,7 @@ function App() {
       },
       {
         institution: "CDI College",
-        degree: "Diploma",
+        degree: "",
         field: "Network Infrastructure Engineering Immersive Program",
         startDate: "2002",
         endDate: "2003",
@@ -222,7 +222,7 @@ function App() {
       },
       {
         institution: "Cisco Networking Academy",
-        degree: "Certification",
+        degree: "",
         field: "Cisco Certified Network Associate (CCNA)",
         startDate: "2000",
         endDate: "2001",
@@ -290,7 +290,7 @@ function App() {
       }
     ],
     contact: {
-      email: "jonathon.fritz@example.com",
+      email: "j@jonathonfritz.com",
       phone: "",
       location: "Victoria, British Columbia, Canada",
       linkedin: "jonathonfritz",
@@ -307,8 +307,8 @@ function App() {
 
       {showContent && (
         <div className="bg-[#121212] text-white min-h-screen dark-resume fade-in">
-          <div className="container mx-auto px-4 py-8 max-w-[1200px]">
-            <div className="bg-[#1a1a1a] rounded-lg shadow-xl overflow-hidden border border-gray-800 resume-glow">
+          <div className="container mx-auto px-3 py-7 max-w-[1300px] relative">
+            <div className="bg-[#1c1c1c] rounded-lg shadow-xl border border-[#2a2a2a] resume-glow">
               <div className="header-section">
                 <Header
                   name={resumeData.name}
@@ -319,13 +319,10 @@ function App() {
                 />
               </div>
 
-              <main className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="md:col-span-1 space-y-6">
+              <main className="p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <div className="md:col-span-1">
                   <div className="skills-section">
                     <Skills skills={resumeData.skills} />
-                  </div>
-                  <div className="education-section">
-                    <Education educations={resumeData.educations} />
                   </div>
                 </div>
 
@@ -336,6 +333,9 @@ function App() {
                   <div className="github-section">
                     <GitHubContributions username={resumeData.contact.github || "jonathonjulian"} />
                   </div>
+                  <div className="education-section">
+                    <Education educations={resumeData.educations} />
+                  </div>
                   {resumeData.showProjects && (
                     <div className="projects-section">
                       <Projects projects={resumeData.projects} />
@@ -345,7 +345,7 @@ function App() {
               </main>
 
               <div className="footer-section">
-                <footer className="px-6 py-4 border-t border-gray-800 bg-[#161616]">
+                <footer className="px-4 py-3 border-t border-gray-800 bg-[#161616]">
                   <div className="flex flex-wrap justify-between items-center">
                     <div className="text-gray-500 text-sm">
                       © {new Date().getFullYear()} {resumeData.name}

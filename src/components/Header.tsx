@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({
   }, [profileImage]);
 
   return (
-    <header className="p-3 pb-4 md:p-6 md:pb-7 pt-0 rounded-lg bg-gradient-to-br from-[#1a1a1a] via-[#222532] to-[#252525] border border-gray-800 relative animate-fadeIn">
+    <header className="p-2.5 pb-4 md:p-4.5 md:pb-6 pt-7 rounded-lg bg-gradient-to-br from-[#1c1c1c] via-[#1e1e1e] to-[#242424] border border-[#2a2a2a] relative animate-fadeIn">
       {/* Background pattern */}
       <div className="absolute inset-0 top-0 opacity-5 pointer-events-none" style={{ zIndex: 0 }}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" className="absolute inset-0 top-0 w-full h-full">
@@ -163,29 +163,28 @@ const Header: React.FC<HeaderProps> = ({
         {/* Skill badges */}
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '15px', margin: '0 0 14px 0' }}>
           <span
-            className="px-3 py-1.5 rounded-lg text-sm text-white border border-blue-700 flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
-            style={{ backgroundColor: 'rgba(58, 122, 178, 0.8)', animationDelay: '0.1s' }}
+            className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.1s' }}
           >
-            {' '}
-            {Icons.blockchain('sm')}
-            <span className="ml-1.5">Blockchain</span>
+            <span>Blockchain</span>
           </span>
           <span
-            className="px-3 py-1.5 rounded-lg text-sm text-white border border-green-700 flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
-            style={{ backgroundColor: 'rgba(59, 156, 122, 0.8)', animationDelay: '0.2s' }}
+            className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.2s' }}
           >
-            {' '}
-            {Icons.kubernetes('sm')}
-            <span className="ml-1.5">Infrastructure</span>
+            <span>Infrastructure</span>
           </span>
           <span
-            className="px-3 py-1.5 rounded-lg text-sm text-white border border-yellow-700 flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
-            style={{ backgroundColor: 'rgba(212, 160, 23, 0.8)', animationDelay: '0.3s' }}
+            className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.3s' }}
           >
-            {' '}
-            {Icons.info('sm')}
-            <span className="ml-1.5">Leadership</span>
+            <span>Leadership</span>
           </span>
+        </div>
+
+        {/* Summary */}
+        <div className="text-gray-300 text-base max-w-4xl mx-auto text-center mb-4 animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+          {summary}
         </div>
 
         {/* Divider */}
@@ -195,7 +194,7 @@ const Header: React.FC<HeaderProps> = ({
             width: '100%',
             maxWidth: '700px',
             height: '1px',
-            background: 'linear-gradient(to right, transparent, #555, transparent)',
+            background: 'linear-gradient(to right, transparent, #444, transparent)',
             margin: '0 0 5px 0',
             animationDelay: '0.4s'
           }}
@@ -216,7 +215,7 @@ const Header: React.FC<HeaderProps> = ({
           {contact?.email && (
             <a
               href={`mailto:${contact.email}`}
-              className="p-2.5 bg-gray-800/70 rounded-full text-gray-300 border border-gray-700 flex items-center justify-center hover:bg-gray-700/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
+              className="p-2.5 bg-[#252525]/70 rounded-full text-gray-300 border border-[#333] flex items-center justify-center hover:bg-[#2a2a2a]/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
               target="_blank"
               rel="noopener noreferrer"
               title={contact.email}
@@ -229,7 +228,7 @@ const Header: React.FC<HeaderProps> = ({
           {contact?.linkedin && (
             <a
               href={`https://linkedin.com/in/${contact.linkedin}`}
-              className="p-2.5 bg-gray-800/70 rounded-full text-gray-300 border border-gray-700 flex items-center justify-center hover:bg-gray-700/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
+              className="p-2.5 bg-[#252525]/70 rounded-full text-gray-300 border border-[#333] flex items-center justify-center hover:bg-[#2a2a2a]/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
               target="_blank"
               rel="noopener noreferrer"
               title="LinkedIn Profile"
@@ -242,7 +241,7 @@ const Header: React.FC<HeaderProps> = ({
           {contact?.github && (
             <a
               href={`https://github.com/${contact.github}`}
-              className="p-2.5 bg-gray-800/70 rounded-full text-gray-300 border border-gray-700 flex items-center justify-center hover:bg-gray-700/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
+              className="p-2.5 bg-[#252525]/70 rounded-full text-gray-300 border border-[#333] flex items-center justify-center hover:bg-[#2a2a2a]/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
               target="_blank"
               rel="noopener noreferrer"
               title="GitHub Profile"
@@ -268,59 +267,11 @@ const Header: React.FC<HeaderProps> = ({
           {contact?.phone && (
             <a
               href={`tel:${contact.phone}`}
-              className="p-2.5 bg-gray-800/70 rounded-full text-gray-300 border border-gray-700 flex items-center justify-center hover:bg-gray-700/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
-              target="_blank"
-              rel="noopener noreferrer"
-              title={contact.phone}
-              aria-label={`Phone: ${contact.phone}`}
-              style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+              className="flex items-center space-x-2 hover:text-sky-500 transition"
             >
               {Icons.phone('md')}
             </a>
           )}
-        </div>
-
-        {/* Summary */}
-        <div
-          className="transition-all duration-300 hover:shadow-lg animate-fadeIn"
-          style={{
-            width: '100%',
-            maxWidth: '700px',
-            padding: '25px 32px 32px 32px',
-            background: 'linear-gradient(to bottom, rgba(40, 44, 52, 0.95), rgba(32, 36, 45, 0.95))',
-            borderRadius: '12px',
-            border: '1px solid rgba(160, 174, 192, 0.25)',
-            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-            marginBottom: '20px',
-            animationDelay: '0.6s'
-          }}
-        >
-          <p
-            style={{
-              color: '#e2e8f0',
-              fontSize: '1.1rem',
-              lineHeight: '1.7',
-              textAlign: 'left',
-              margin: 0,
-              letterSpacing: '0.5px'
-            }}
-          >
-            {summary}
-          </p>
-          <div
-            style={{
-              fontSize: '0.8rem',
-              color: '#718096',
-              opacity: .8,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              marginTop: '20px'
-            }}
-          >
-            {Icons.info('xs')}
-            <span>Last updated: March 1, 2025</span>{' '}
-          </div>
         </div>
       </div>
     </header>

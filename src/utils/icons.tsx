@@ -41,14 +41,20 @@ export const Icons = {
   ),
 
   kubernetes: (size: IconSize = 'md') => (
-    <IconComponent size={size} viewBox="0 0 24 24" color="#C0C0C0" className="transition-transform hover:scale-110">
-      <path d="M12,0C5.383,0,0,5.383,0,12s5.383,12,12,12s12-5.383,12-12S18.617,0,12,0z M12,24c-6.617,0-12-5.383-12-12S5.383,0,12,0 s12,5.383,12,12S18.617,24,12,24z M12,4.11c-4.35,0-7.89,3.54-7.89,7.89s3.54,7.89,7.89,7.89s7.89-3.54,7.89-7.89 S16.35,4.11,12,4.11z M12,18.89c-3.79,0-6.89-3.09-6.89-6.89s3.09-6.89,6.89-6.89s6.89,3.09,6.89,6.89S15.79,18.89,12,18.89z M13.5,8.5v-3h-3v3H13.5z M13.5,18.5v-3h-3v3H13.5z M18.5,13.5h-3v3h3V13.5z M18.5,10.5v-3h-3v3H18.5z M5.5,13.5h3v-3h-3 V13.5z M5.5,10.5v3h3v-3H5.5z" />
+    <IconComponent size={size} viewBox="0 0 24 24" color="#4a5568" className="transition-transform hover:scale-110">
+      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z" />
+      <path d="M15 6h-6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10h-6V8h6v8z" />
+      <path d="M10 10h4v4h-4z" />
     </IconComponent>
   ),
 
   blockchain: (size: IconSize = 'md') => (
-    <IconComponent size={size} viewBox="0 0 24 24" color="#A855F7" className="transition-transform hover:scale-110">
-      <path d="M20,8h-9L8.89,6.06C8.67,5.85,8.35,5.75,8,5.75H4C2.9,5.75,2,6.65,2,7.75v8.5c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2v-6.5 C22,8.9,21.1,8,20,8z M18.5,16.5h-13v-1h13V16.5z M18.5,13.5h-13v-1h13V13.5z M16.92,10.5L16.5,11h-9l-0.42-0.5H16.92z" />
+    <IconComponent size={size} viewBox="0 0 24 24" color="#4a5568" className="transition-transform hover:scale-110">
+      <path d="M11 5h2v14h-2z" />
+      <path d="M17.7 8.3l-1.4 1.4c1.2 1.2 1.2 3.2 0 4.4l1.4 1.4c2-2 2-5.3 0-7.2z" />
+      <path d="M7.7 8.3c-2 2-2 5.2 0 7.2l1.4-1.4c-1.2-1.2-1.2-3.2 0-4.4L7.7 8.3z" />
+      <path d="M4.6 5.2c-3.1 3.1-3.1 8.3 0 11.5l1.4-1.4c-2.3-2.3-2.3-6.2 0-8.6L4.6 5.2z" />
+      <path d="M19.4 5.2l-1.4 1.4c2.3 2.4 2.3 6.3 0 8.6l1.4 1.4c3.1-3.1 3.1-8.3 0-11.4z" />
     </IconComponent>
   ),
 
@@ -60,8 +66,10 @@ export const Icons = {
   ),
 
   info: (size: IconSize = 'md') => (
-    <IconComponent size={size} viewBox="0 0 20 20" className="transition-transform">
-      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+    <IconComponent size={size} viewBox="0 0 24 24" color="#4a5568" className="transition-transform">
+      <path d="M12 2L4.5 7v10L12 22l7.5-5V7L12 2z" />
+      <path d="M9 16v-4h6v4l-2 2h-2l-2-2z" />
+      <path d="M12 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
     </IconComponent>
   ),
 

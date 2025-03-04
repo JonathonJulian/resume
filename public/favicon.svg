@@ -2,9 +2,9 @@
   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
   <circle cx="12" cy="7" r="4"></circle>
   <style>
-    path, circle { stroke: #10b981; }
+    path, circle { stroke: #333333; }
     @media (prefers-color-scheme: dark) {
-      path, circle { stroke: #10b981; }
+      path, circle { stroke: #333333; }
     }
   </style>
 </svg>

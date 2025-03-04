@@ -4,214 +4,205 @@ interface TerminalIntroProps {
   onComplete: () => void;
 }
 
+// Terminal content with types for better control
+type LineType = 'aws' | 'command' | 'output' | 'empty';
+
+interface TerminalLine {
+  type: LineType;
+  content: string;
+}
+
+// The terminal content with explicit types
+const TERMINAL_CONTENT: TerminalLine[] = [
+  { type: 'aws', content: 'on arn:aws:eks:us-east-1:123456789012:cluster/prod ~ on main [!+?] is 📦 v1.0.0' },
+  { type: 'command', content: '❯ k get nodes' },
+  { type: 'output', content: 'NAME                STATUS    ROLES                      AGE    VERSION' },
+  { type: 'output', content: 'control0            Ready     control-plane,etcd,master  36d    v1.30.1+rke2r1' },
+  { type: 'output', content: 'worker0             Ready     <none>                     36d    v1.30.1+rke2r1' },
+  { type: 'empty', content: '' },
+  { type: 'command', content: '❯ helm list' },
+  { type: 'output', content: 'No releases found in default namespace.' },
+  { type: 'empty', content: '' },
+  { type: 'command', content: '❯ helm install jonathon-resume ./resume-chart' },
+  { type: 'output', content: 'NAME: jonathon-resume' },
+  { type: 'output', content: 'LAST DEPLOYED: Tue Mar 04 14:35:21 2025' },
+  { type: 'output', content: 'NAMESPACE: default' },
+  { type: 'output', content: 'STATUS: deployed' },
+  { type: 'output', content: 'REVISION: 1' },
+  { type: 'empty', content: '' },
+  { type: 'command', content: '❯ kubectl get pod -l app=jonathon-resume' },
+  { type: 'output', content: 'NAME                                 READY   STATUS    RESTARTS   AGE' },
+  { type: 'output', content: 'jonathon-fritz-resume-6f7d9c7b8d-x2zs1   1/1     Running   0          42s' },
+  { type: 'empty', content: '' },
+  { type: 'command', content: '❯ kubectl port-forward jonathon-fritz-resume-6f7d9c7b8d-x2zs1 8080:80' },
+  { type: 'output', content: 'Forwarding from 127.0.0.1:8080 -> 80' },
+  { type: 'empty', content: '' },
+  { type: 'command', content: '❯ open http://localhost:8080' }
+];
+
 const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
-  const [displayedContent, setDisplayedContent] = useState<string[]>([]);
-  const [currentLine, setCurrentLine] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(false);
-  const terminalContentRef = useRef<HTMLDivElement>(null);
-  const completionTriggeredRef = useRef(false);
+  // Terminal state
+  const [visibleLines, setVisibleLines] = useState<string[]>([]);
+  const [typewriterText, setTypewriterText] = useState("");
+  const [typewriterComplete, setTypewriterComplete] = useState(true);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
 
-  // Command sequence to display with K8s-themed content
-  const commands = [
-    '❯ k get nodes',
-    'NAME                STATUS    ROLES                      AGE    VERSION',
-    'control0            Ready     control-plane,etcd,master  36d    v1.30.1+rke2r1',
-    'worker0             Ready     <none>                     36d    v1.30.1+rke2r1',
-    '',
-    '❯ helm list',
-    'No releases found in default namespace.',
-    '',
-    '❯ helm install jonathon-resume ./resume-chart',
-    'NAME: jonathon-resume',
-    'LAST DEPLOYED: Tue Mar 04 14:35:21 2025',
-    'NAMESPACE: default',
-    'STATUS: deployed',
-    'REVISION: 1',
-    '',
-    '❯ kubectl get pod -l app=jonathon-resume',
-    'NAME                                 READY   STATUS    RESTARTS   AGE',
-    'jonathon-fritz-resume-6f7d9c7b8d-x2zs1   1/1     Running   0          42s',
-    '',
-    '❯ kubectl port-forward jonathon-fritz-resume-6f7d9c7b8d-x2zs1 8080:80',
-    'Forwarding from 127.0.0.1:8080 -> 80',
-    '',
-    '❯ open http://localhost:8080'
-  ];
+  // Refs
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<{timeouts: NodeJS.Timeout[]}>(
+    {timeouts: []}
+  );
 
-  // Typing speed and pauses
-  const typingSpeed = 20; // ms per character
-  const commandPause = 600; // pause before starting new command
-  const completionPause = 1200; // pause before showing the resume
-  const promptTypingSpeed = 10; // slight delay for prompt lines
-  const commandTypingSpeed = 40; // slower for command lines
-  const finalCommandSpeed = 80; // even slower for final command
+  // Clean up function
+  const clearTimeouts = () => {
+    animationRef.current.timeouts.forEach(clearTimeout);
+    animationRef.current.timeouts = [];
+  };
 
-  // Initialization effect - start the animation after component mount
+  // Add timeout with tracking for cleanup
+  const addTimeout = (callback: () => void, delay: number) => {
+    const id = setTimeout(callback, delay);
+    animationRef.current.timeouts.push(id);
+    return id;
+  };
+
+  // Initialize with AWS line on mount, only once
   useEffect(() => {
-    // Small delay to ensure component is fully mounted
-    const initialDelay = setTimeout(() => {
-      setIsTyping(true);
-      processCurrentLine();
-    }, 300);
+    // Start with the AWS line - it's always visible and never animated
+    setVisibleLines([TERMINAL_CONTENT[0].content]);
+    setCurrentLineIndex(1); // Start processing from line 1
 
-    return () => clearTimeout(initialDelay);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Start cursor blinking
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 500);
+
+    return () => {
+      clearInterval(cursorInterval);
+      clearTimeouts();
+    };
   }, []);
 
-  // Auto-scroll the terminal content
+  // Effect for scrolling whenever content changes
   useEffect(() => {
-    if (terminalContentRef.current) {
-      terminalContentRef.current.scrollTop = terminalContentRef.current.scrollHeight;
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [displayedContent]);
+  }, [visibleLines, typewriterText]);
 
-  // Process the current line based on its type
-  const processCurrentLine = () => {
-    if (currentLine >= commands.length) {
-      // All commands displayed, trigger the completion callback after a pause
-      if (!completionTriggeredRef.current) {
-        completionTriggeredRef.current = true;
-        console.log("Terminal animation complete, transitioning to resume...");
-
-        // Add a visual pause after final command before transitioning
-        setTimeout(() => {
-          onComplete();
-        }, completionPause);
-      }
+  // Main animation effect
+  useEffect(() => {
+    // Skip if we've processed all lines
+    if (currentLineIndex >= TERMINAL_CONTENT.length) {
+      addTimeout(() => {
+        onComplete();
+      }, 2000);
       return;
     }
 
-    const currentCommand = commands[currentLine];
-    const isPromptLine = currentCommand.startsWith('on arn:aws');
-    const isCommandLine = currentCommand.startsWith('❯');
-    const isFinalCommand = currentCommand.includes('open http://localhost');
+    // Only start a new line animation if the previous one is complete
+    if (!typewriterComplete) return;
 
-    // Determine typing speed based on line type
-    let currentTypingSpeed = typingSpeed;
-    if (isPromptLine) {
-      currentTypingSpeed = promptTypingSpeed;
-    } else if (isCommandLine) {
-      currentTypingSpeed = isFinalCommand ? finalCommandSpeed : commandTypingSpeed;
-    }
+    const currentLine = TERMINAL_CONTENT[currentLineIndex];
 
-    if (charIndex === 0) {
-      // For command lines, start with an empty line and begin typing (don't display the first character separately)
-      if (isCommandLine && !isPromptLine) {
-        setTimeout(() => {
-          setDisplayedContent(prev => [...prev, '']);  // Start with empty string instead of first character
-          setCharIndex(0);  // Start from the beginning of the string
-          setIsTyping(false);
-        }, commandPause);
-      }
-      else if (currentCommand === '') {
-        // For empty lines, just add them
-        setTimeout(() => {
-          setDisplayedContent(prev => [...prev, '']);
-          setCurrentLine(prevLine => prevLine + 1);
-          setIsTyping(false);
-        }, typingSpeed * 2);
-      }
-      else {
-        // For prompt lines and output lines, display the entire line at once
-        setTimeout(() => {
-          setDisplayedContent(prev => [...prev, currentCommand]);
-          setCurrentLine(prevLine => prevLine + 1);
-          setIsTyping(false);
-        }, isPromptLine ? promptTypingSpeed : typingSpeed * 3);
-      }
-    } else {
-      // Continue typing the current line, character by character
-      setTimeout(() => {
-        if (charIndex < currentCommand.length) {
-          setDisplayedContent(prev => {
-            const newContent = [...prev];
-            newContent[newContent.length - 1] = currentCommand.slice(0, charIndex + 1);
-            return newContent;
-          });
-          setCharIndex(prevIndex => prevIndex + 1);
-        } else {
-          // Line finished, move to next line
-          setCharIndex(0);
-          setCurrentLine(prevLine => prevLine + 1);
+    // Process the current line based on its type
+    if (currentLine.type === 'command') {
+      // For commands, animate typing character by character
+      setTypewriterComplete(false);
+      setTypewriterText('');
+
+      let charIndex = 0;
+      const typingSpeed = 40; // milliseconds per character
+      const content = currentLine.content;
+
+      const typeNextChar = () => {
+        if (charIndex <= content.length) {
+          setTypewriterText(content.substring(0, charIndex));
+          charIndex++;
+
+          if (charIndex <= content.length) {
+            addTimeout(typeNextChar, typingSpeed);
+          } else {
+            // Command typing finished, add to visible lines after a small pause
+            addTimeout(() => {
+              setVisibleLines(prev => [...prev, content]);
+              setTypewriterText('');
+              setTypewriterComplete(true);
+              setCurrentLineIndex(prev => prev + 1);
+            }, 200);
+          }
         }
-        setIsTyping(false);
-      }, currentTypingSpeed);
-    }
-  };
+      };
 
-  // Effect to process the next step when not typing
-  useEffect(() => {
-    if (!isTyping && currentLine < commands.length) {
-      const timer = setTimeout(() => {
-        setIsTyping(true);
-        processCurrentLine();
-      }, 10);
-
-      return () => clearTimeout(timer);
+      // Start typing after a delay
+      addTimeout(typeNextChar, 300);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTyping, currentLine, charIndex]);
-
-  // Ensure the completion callback is triggered if we reach the end
-  useEffect(() => {
-    if (currentLine >= commands.length && !completionTriggeredRef.current) {
-      completionTriggeredRef.current = true;
-      console.log("Terminal animation complete, transitioning to resume...");
-      setTimeout(() => {
-        onComplete();
-      }, completionPause);
+    else if (currentLine.type === 'output') {
+      // For output, add all at once
+      setVisibleLines(prev => [...prev, currentLine.content]);
+      setCurrentLineIndex(prev => prev + 1);
     }
-  }, [currentLine, commands.length, onComplete]);
+    else if (currentLine.type === 'empty') {
+      // For empty lines, just add and continue
+      setVisibleLines(prev => [...prev, '']);
+      setCurrentLineIndex(prev => prev + 1);
+    }
+  }, [currentLineIndex, typewriterComplete, onComplete]);
 
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className="w-full max-w-[860px] bg-black text-green-500 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn">
+      <div className="w-full max-w-[1050px] bg-black text-gray-400 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn shadow-xl border border-gray-700">
         <div className="terminal-header flex items-center justify-between p-2 sm:p-3 bg-gray-900 border-b border-gray-800">
           <div className="flex space-x-2">
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
           </div>
-          <div className="text-xs sm:text-sm text-gray-400">Terminal</div>
-          <div className="w-2 h-2 sm:w-3 sm:h-3"></div> {/* Empty div for spacing */}
+          <div className="text-xs sm:text-sm text-gray-500">Terminal</div>
+          <div className="w-2 h-2 sm:w-3 sm:h-3"></div>
         </div>
 
         <div
-          ref={terminalContentRef}
-          className="terminal-content h-[294px] sm:h-[368px] md:h-[368px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
+          ref={terminalRef}
+          className="terminal-content h-[358px] sm:h-[448px] md:h-[448px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
         >
-          {/* Display the prompt line only once at the top */}
-          <div className="text-blue-400 mb-1">
-            on arn:aws:eks:us-east-1:966761610288:cluster/prod ~ on main [!+?] is 📦 v1.0.0
-          </div>
-
-          {displayedContent.map((line, index) => (
-            <div key={index} className={`${line.startsWith('on arn:aws') ? 'text-blue-400' : line.startsWith('❯') ? 'text-white' : 'text-green-400'} ${line === '' ? 'mb-2' : 'mb-0'}`}>
+          {/* Display all completed lines */}
+          {visibleLines.map((line, i) => (
+            <div
+              key={`line-${i}`}
+              className={`${line.startsWith('on arn:aws') ? 'text-gray-300' : line.startsWith('❯') ? 'text-gray-300' : 'text-gray-500'} ${line === '' ? 'mb-2' : 'mb-0'}`}
+            >
               {line}
-              {index === displayedContent.length - 1 && charIndex === line.length && currentLine < commands.length && (
-                <span className="inline-block w-2 h-4 bg-white animate-blink ml-0.5"></span>
-              )}
             </div>
           ))}
-          {/* Add final cursor after all content is displayed */}
-          {currentLine >= commands.length && !completionTriggeredRef.current && (
-            <div className="text-white">
-              <span className="inline-block w-2 h-4 bg-white animate-blink ml-0.5"></span>
+
+          {/* Display the line currently being typed */}
+          {typewriterText && (
+            <div className="text-gray-300">
+              {typewriterText}
+              {showCursor && <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5"></span>}
+            </div>
+          )}
+
+          {/* Show cursor at the end when nothing is being typed and animation is complete */}
+          {!typewriterText && currentLineIndex >= TERMINAL_CONTENT.length && showCursor && (
+            <div className="text-gray-300">
+              <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5"></span>
             </div>
           )}
         </div>
       </div>
 
-      {/* Skip button that appears after a short delay */}
-      {currentLine < commands.length - 3 && (
-        <button
-          onClick={onComplete}
-          className="fixed bottom-6 right-6 bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-md transition-colors duration-200 border border-gray-700"
-        >
-          Skip Intro
-        </button>
-      )}
+      <button
+        onClick={() => {
+          clearTimeouts();
+          onComplete();
+        }}
+        className="fixed bottom-6 right-6 bg-gray-900 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-md transition-colors duration-200 border border-gray-700"
+      >
+        Skip Intro
+      </button>
     </div>
   );
 };
