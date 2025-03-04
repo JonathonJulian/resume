@@ -50,7 +50,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
   // Refs
   const terminalRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<{timeouts: NodeJS.Timeout[]}>(
+  const animationRef = useRef<{timeouts: ReturnType<typeof setTimeout>[]}>(
     {timeouts: []}
   );
 
