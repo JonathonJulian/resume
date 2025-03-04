@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({
   }, [profileImage]);
 
   return (
-    <header className="p-2.5 pb-4 md:p-4.5 md:pb-6 pt-7 rounded-lg bg-gradient-to-br from-[#1c1c1c] via-[#1e1e1e] to-[#242424] border border-[#2a2a2a] relative animate-fadeIn">
+    <header className="p-5 pb-6 md:p-6 md:pb-8 pt-8 rounded-lg bg-gradient-to-br from-[#1c1c1c] via-[#1e1e1e] to-[#242424] border border-[#2a2a2a] relative animate-fadeIn">
       {/* Background pattern */}
       <div className="absolute inset-0 top-0 opacity-5 pointer-events-none" style={{ zIndex: 0 }}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" className="absolute inset-0 top-0 w-full h-full">
@@ -131,14 +131,14 @@ const Header: React.FC<HeaderProps> = ({
         )}
 
         {/* Name and Title */}
-        <div className="animate-fadeIn" style={{ textAlign: 'center', margin: '0 0 20px 0' }}>
+        <div className="animate-fadeIn" style={{ textAlign: 'center', margin: '0 0 24px 0' }}>
           <h1
             style={{
-              fontSize: '2.8rem',
+              fontSize: '3rem',
               fontWeight: '800',
               color: '#ffffff',
               lineHeight: '1.2',
-              margin: '0 0 15px 0',
+              margin: '0 0 20px 0',
               letterSpacing: '0.5px',
               textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
             }}
@@ -161,21 +161,21 @@ const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Skill badges */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '15px', margin: '0 0 20px 0' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', margin: '0 0 28px 0' }}>
           <span
-            className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            className="px-4 py-2 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
             style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.1s' }}
           >
             <span>Blockchain</span>
           </span>
           <span
-            className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            className="px-4 py-2 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
             style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.2s' }}
           >
             <span>Infrastructure</span>
           </span>
           <span
-            className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            className="px-4 py-2 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
             style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.3s' }}
           >
             <span>Leadership</span>
@@ -183,7 +183,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Summary */}
-        <div className="text-gray-300 text-base max-w-4xl mx-auto text-center mb-4 animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+        <div className="text-gray-300 text-base max-w-4xl mx-auto text-center mb-6 animate-fadeIn" style={{ animationDelay: '0.4s', fontSize: '1.05rem', lineHeight: '1.6' }}>
           {summary}
         </div>
 
