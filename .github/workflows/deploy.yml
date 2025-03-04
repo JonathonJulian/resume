@@ -64,10 +64,12 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
-          # Upload dist repository
+          name: github-pages
           path: './dist'
+          retention-days: 1
+          if-no-files-found: error
 
       - name: Deploy to GitHub Pages
         id: deployment
