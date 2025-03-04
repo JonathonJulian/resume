@@ -145,6 +145,19 @@ const Header: React.FC<HeaderProps> = ({
           >
             {name}
           </h1>
+          <h2
+            style={{
+              fontSize: '1.8rem',
+              color: '#c0c0c0',
+              lineHeight: '1.3',
+              fontWeight: '500',
+              margin: 0,
+              letterSpacing: '0.3px',
+              textShadow: '0.5px 0.5px 1px rgba(0, 0, 0, 0.3)'
+            }}
+          >
+            Experienced Professional
+          </h2>
         </div>
 
         {/* Skill badges */}
