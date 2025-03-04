@@ -44,9 +44,12 @@ const Education: React.FC<EducationProps> = ({ educations }) => {
               {education.achievements && education.achievements.length > 0 && (
                 <div className="mt-2 bg-[#1e1e1e] p-2 rounded-md border border-[#2a2a2a]">
                   <h5 className="font-medium text-primary mb-2">Key Achievements</h5>
-                  <ul className="list-disc list-inside space-y-1 text-secondary">
+                  <ul className="pl-5 space-y-1 text-secondary">
                     {education.achievements.map((achievement, i) => (
-                      <li key={i}>{achievement}</li>
+                      <li key={i} className="relative pl-5">
+                        <span className="absolute left-0">•</span>
+                        {achievement}
+                      </li>
                     ))}
                   </ul>
                 </div>
