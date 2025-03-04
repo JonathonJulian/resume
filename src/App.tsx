@@ -73,7 +73,7 @@ function App() {
         position: "Head Of Infrastructure Engineering",
         startDate: "Jul 2022",
         endDate: "Jan 2023",
-        description: "Decentralized Web3 Infrastructure providing blockchain API access at scale",
+        description: "Decentralized Web3 Infrastructure providing blockchain RPC access at scale",
         titleColor: "text-job-head",
         achievements: [
           "Led successful migration from EC2/Docker Compose to GitOps with Kubernetes and ArgoCD across 16 global regions, significantly reducing operational costs",
@@ -233,7 +233,7 @@ function App() {
       {
         category: "Blockchain & Web3",
         skills: [
-          "Ethereum", "Arbitrum", ""Layer 2/3", "Gas Network", "Geth", "Reth", "Erigon", "Polygon", "BSC", "Blockscout", "Smart Contracts", "Mempool Analysis", "RPC Infrastructure", "Transaction Monitoring"
+          "Ethereum", "Arbitrum", "Optimism", "ZkStack", "Solana","Layer 2/3", "Oracles", "Geth", "Reth", "Erigon", "Polygon", "BSC", "Blockscout", "Smart Contracts", "Mempool Analysis", "RPC Infrastructure", "Transaction Monitoring"
         ]
       },
       {
@@ -293,8 +293,8 @@ function App() {
       email: "j@jonathonfritz.com",
       phone: "",
       location: "Victoria, British Columbia, Canada",
-      linkedin: "jonathonfritz",
-      github: "jonathonjulian",
+      linkedin: "https://www.linkedin.com/in/jonathonfritz",
+      github: "https://github.com/jonathonjulian",
       website: ""
     }
   });
@@ -331,7 +331,7 @@ function App() {
                     <Experience experiences={resumeData.experiences} />
                   </div>
                   <div className="github-section">
-                    <GitHubContributions username={resumeData.contact.github || "jonathonjulian"} />
+                    <GitHubContributions username={resumeData.contact.github.split('/').pop() || "jonathonjulian"} />
                   </div>
                   <div className="education-section">
                     <Education educations={resumeData.educations} />
