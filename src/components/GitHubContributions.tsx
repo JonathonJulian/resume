@@ -34,11 +34,11 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
         setLoading(true);
         setError(null);
 
-        // GitHub GraphQL API endpoint
-        const endpoint = 'https://api.github.com/graphql';
+        // GitHub GraphQL API endpoint and query are commented out since we're using mock data
+        // const endpoint = 'https://api.github.com/graphql';
 
-        // Query to fetch contributions data
-        const query = `
+        // GraphQL query commented out since we're using mock data
+        /* const query = `
           query userContributions($username: String!) {
             user(login: $username) {
               name
@@ -56,21 +56,7 @@ const GitHubContributions: React.FC<GitHubContributionsProps> = ({ username }) =
               }
             }
           }
-        `;
-
-        // Fetch data from GitHub API
-        await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            // Note: In a production app, you would use a proper authentication token
-            // This is just a basic example without authentication
-          },
-          body: JSON.stringify({
-            query,
-            variables: { username },
-          }),
-        });
+        `; */
 
         // Since we don't have a GitHub token for the API, we'll use accurate data from the screenshot
         // This accurately reflects the user's actual GitHub contributions
