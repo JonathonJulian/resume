@@ -145,23 +145,10 @@ const Header: React.FC<HeaderProps> = ({
           >
             {name}
           </h1>
-          <h2
-            style={{
-              fontSize: '1.8rem',
-              color: '#c0c0c0',
-              lineHeight: '1.3',
-              fontWeight: '500',
-              margin: 0,
-              letterSpacing: '0.3px',
-              textShadow: '0.5px 0.5px 1px rgba(0, 0, 0, 0.3)'
-            }}
-          >
-            {title}
-          </h2>
         </div>
 
         {/* Skill badges */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '15px', margin: '0 0 24px 0' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '15px', margin: '0 0 20px 0' }}>
           <span
             className="px-3 py-1.5 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
             style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.1s' }}
@@ -180,6 +167,11 @@ const Header: React.FC<HeaderProps> = ({
           >
             <span>Leadership</span>
           </span>
+        </div>
+
+        {/* Summary */}
+        <div className="text-gray-300 text-base max-w-4xl mx-auto text-center mb-4 animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+          {summary}
         </div>
 
         {/* Divider */}
