@@ -14,11 +14,10 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
   // Command sequence to display with K8s-themed content
   const commands = [
-    '❯ kubectl get nodes',
-    'NAME                STATUS    ROLES   AGE    VERSION',
-    'resume-master-01    Ready     master  2y     v1.26.0',
-    'resume-worker-01    Ready     worker  2y     v1.26.0',
-    'resume-worker-02    Ready     worker  2y     v1.26.0',
+    '❯ k get nodes',
+    'NAME                STATUS    ROLES                      AGE    VERSION',
+    'control0            Ready     control-plane,etcd,master  36d    v1.30.1+rke2r1',
+    'worker0             Ready     <none>                     36d    v1.30.1+rke2r1',
     '',
     '❯ helm list',
     'No releases found in default namespace.',
@@ -97,11 +96,11 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
     }
 
     if (charIndex === 0) {
-      // For command lines, show character by character
+      // For command lines, start with an empty line and begin typing (don't display the first character separately)
       if (isCommandLine && !isPromptLine) {
         setTimeout(() => {
-          setDisplayedContent(prev => [...prev, currentCommand.slice(0, 1)]);
-          setCharIndex(1);
+          setDisplayedContent(prev => [...prev, '']);  // Start with empty string instead of first character
+          setCharIndex(0);  // Start from the beginning of the string
           setIsTyping(false);
         }, commandPause);
       }
