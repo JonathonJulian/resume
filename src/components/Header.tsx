@@ -18,7 +18,6 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   name,
-  title,
   profileImage,
   summary,
   contact
@@ -74,9 +73,9 @@ const Header: React.FC<HeaderProps> = ({
               height: '160px',
               borderRadius: '50%',
               overflow: 'hidden',
-              background: 'linear-gradient(45deg, rgba(74, 144, 226, 0.8), rgba(80, 227, 194, 0.8))',
+              background: 'linear-gradient(45deg, rgba(74, 85, 104, 0.8), rgba(45, 55, 72, 0.8))',
               padding: '3px',
-              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(160, 174, 192, 0.3), 0 0 15px rgba(74, 144, 226, 0.3)',
+              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(160, 174, 192, 0.3), 0 0 15px rgba(74, 85, 104, 0.3)',
               backgroundColor: '#1a1a1a',
               margin: '0 auto 10px auto',
               position: 'relative'
@@ -134,13 +133,14 @@ const Header: React.FC<HeaderProps> = ({
         <div className="animate-fadeIn" style={{ textAlign: 'center', margin: '0 0 24px 0' }}>
           <h1
             style={{
-              fontSize: '3rem',
+              fontSize: '3.2rem',
               fontWeight: '800',
               color: '#ffffff',
               lineHeight: '1.2',
               margin: '0 0 20px 0',
               letterSpacing: '0.5px',
-              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
+              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
+              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif"
             }}
           >
             {name}
@@ -153,37 +153,63 @@ const Header: React.FC<HeaderProps> = ({
               fontWeight: '500',
               margin: 0,
               letterSpacing: '0.3px',
-              textShadow: '0.5px 0.5px 1px rgba(0, 0, 0, 0.3)'
+              textShadow: '0.5px 0.5px 1px rgba(0, 0, 0, 0.3)',
+              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif"
             }}
           >
-            Experienced Professional
+            Tech Leader & Innovator
           </h2>
         </div>
 
         {/* Skill badges */}
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', margin: '0 0 28px 0' }}>
           <span
-            className="px-4 py-2 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
-            style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.1s' }}
+            className="px-4 py-2 rounded-lg text-sm text-white border flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            style={{
+              backgroundColor: 'rgba(45, 55, 72, 0.8)',
+              borderColor: '#3a4a5a',
+              animationDelay: '0.1s',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+            }}
           >
+            <span className="mr-2">🌐</span>
             <span>Blockchain</span>
           </span>
           <span
-            className="px-4 py-2 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
-            style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.2s' }}
+            className="px-4 py-2 rounded-lg text-sm text-white border flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            style={{
+              backgroundColor: 'rgba(45, 55, 72, 0.8)',
+              borderColor: '#3a4a5a',
+              animationDelay: '0.2s',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+            }}
           >
+            <span className="mr-2">🖥️</span>
             <span>Infrastructure</span>
           </span>
           <span
-            className="px-4 py-2 rounded-lg text-sm text-white border border-[#3a4a5a] flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
-            style={{ backgroundColor: 'rgba(45, 55, 72, 0.8)', animationDelay: '0.3s' }}
+            className="px-4 py-2 rounded-lg text-sm text-white border flex items-center transition-all duration-300 hover:scale-105 hover:brightness-110 animate-fadeIn"
+            style={{
+              backgroundColor: 'rgba(45, 55, 72, 0.8)',
+              borderColor: '#3a4a5a',
+              animationDelay: '0.3s',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+            }}
           >
+            <span className="mr-2">👥</span>
             <span>Leadership</span>
           </span>
         </div>
 
         {/* Summary */}
-        <div className="text-gray-300 text-base max-w-4xl mx-auto text-center mb-6 animate-fadeIn" style={{ animationDelay: '0.4s', fontSize: '1.05rem', lineHeight: '1.6' }}>
+        <div className="text-gray-300 text-base max-w-4xl mx-auto text-center mb-6 animate-fadeIn"
+          style={{
+            animationDelay: '0.4s',
+            fontSize: '1.05rem',
+            lineHeight: '1.6',
+            fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif"
+          }}
+        >
           {summary}
         </div>
 
@@ -200,79 +226,127 @@ const Header: React.FC<HeaderProps> = ({
           }}
         />
 
-        {/* Contact Icons */}
-        <div
-          className="animate-fadeIn"
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '15px',
-            margin: '5px 0 16px 0',
-            animationDelay: '0.5s'
-          }}
-        >
-          {contact?.email && (
-            <a
-              href={`mailto:${contact.email}`}
-              className="p-2.5 bg-[#252525]/70 rounded-full text-gray-300 border border-[#333] flex items-center justify-center hover:bg-[#2a2a2a]/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
-              target="_blank"
-              rel="noopener noreferrer"
-              title={contact.email}
-              aria-label={`Email: ${contact.email}`}
-              style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-            >
-              {Icons.email('md')}
-            </a>
-          )}
-          {contact?.linkedin && (
-            <a
-              href={`https://linkedin.com/in/${contact.linkedin}`}
-              className="p-2.5 bg-[#252525]/70 rounded-full text-gray-300 border border-[#333] flex items-center justify-center hover:bg-[#2a2a2a]/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="LinkedIn Profile"
-              aria-label="LinkedIn Profile"
-              style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-            >
-              {Icons.linkedin('md')}
-            </a>
-          )}
-          {contact?.github && (
-            <a
-              href={`https://github.com/${contact.github}`}
-              className="p-2.5 bg-[#252525]/70 rounded-full text-gray-300 border border-[#333] flex items-center justify-center hover:bg-[#2a2a2a]/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="GitHub Profile"
-              aria-label="GitHub Profile"
-              style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-            >
-              {Icons.github('md')}
-            </a>
-          )}
-          {contact?.website && (
-            <a
-              href={contact.website}
-              className="p-2.5 bg-gray-800/70 rounded-full text-gray-300 border border-gray-700 flex items-center justify-center hover:bg-gray-700/70 transition-all duration-300 hover:scale-110 hover:brightness-120"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Personal Website"
-              aria-label="Personal Website"
-              style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-            >
-              {Icons.website('md')}
-            </a>
-          )}
-          {contact?.phone && (
-            <a
-              href={`tel:${contact.phone}`}
-              className="flex items-center space-x-2 hover:text-sky-500 transition"
-            >
-              {Icons.phone('md')}
-            </a>
-          )}
-        </div>
+        {/* Contact and Social */}
+        {contact && (
+          <div className="flex flex-wrap justify-center gap-4 animate-fadeIn" style={{ animationDelay: '0.5s' }}>
+            {contact.github && (
+              <a
+                href={contact.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-all duration-300 hover:scale-110"
+                style={{
+                  color: '#a0a0a0',
+                  padding: '10px',
+                  borderRadius: '50%',
+                  background: 'rgba(45, 55, 72, 0.6)',
+                  border: '1px solid #3a4a5a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px',
+                  fontSize: '1.5rem',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                {Icons.github()}
+              </a>
+            )}
+            {contact.linkedin && (
+              <a
+                href={contact.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-all duration-300 hover:scale-110"
+                style={{
+                  color: '#a0a0a0',
+                  padding: '10px',
+                  borderRadius: '50%',
+                  background: 'rgba(45, 55, 72, 0.6)',
+                  border: '1px solid #3a4a5a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px',
+                  fontSize: '1.5rem',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                {Icons.linkedin()}
+              </a>
+            )}
+            {contact.email && (
+              <a
+                href={`mailto:${contact.email}`}
+                className="transition-all duration-300 hover:scale-110"
+                style={{
+                  color: '#a0a0a0',
+                  padding: '10px',
+                  borderRadius: '50%',
+                  background: 'rgba(45, 55, 72, 0.6)',
+                  border: '1px solid #3a4a5a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px',
+                  fontSize: '1.5rem',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                {Icons.envelope()}
+              </a>
+            )}
+            {contact.phone && (
+              <a
+                href={`tel:${contact.phone}`}
+                className="transition-all duration-300 hover:scale-110"
+                style={{
+                  color: '#a0a0a0',
+                  padding: '10px',
+                  borderRadius: '50%',
+                  background: 'rgba(45, 55, 72, 0.6)',
+                  border: '1px solid #3a4a5a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px',
+                  fontSize: '1.5rem',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                {Icons.phone()}
+              </a>
+            )}
+            {contact.website && (
+              <a
+                href={contact.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-all duration-300 hover:scale-110"
+                style={{
+                  color: '#a0a0a0',
+                  padding: '10px',
+                  borderRadius: '50%',
+                  background: 'rgba(45, 55, 72, 0.6)',
+                  border: '1px solid #3a4a5a',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px',
+                  fontSize: '1.5rem',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                }}
+              >
+                {Icons.globe()}
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );

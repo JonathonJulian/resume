@@ -58,7 +58,7 @@ function App() {
           "Streamlined alert management across Slack and PagerDuty, implementing intelligent alert routing and reducing alert fatigue through correlation and actionable thresholds",
           "Enhanced system reliability through automated recovery procedures and proactive monitoring",
           "Demonstrated exceptional incident response capabilities through on-call rotation, rapidly debugging and resolving critical production issues",
-          "Pioneered extensive GitHub Actions workflows for infrastructure automation and deployments before ArgoCD adoption, now maintaining streamlined container build pipelines",
+          "Implemented extensive GitHub Actions workflows for infrastructure automation and deployments before ArgoCD adoption, now maintaining streamlined container build pipelines",
           "Collaborated on HashiCorp Vault implementation, consolidating secrets from Ansible, GitHub, and 1Password into a unified management system, improving security posture and operational efficiency",
           "Established self-service infrastructure model for developers, significantly reducing operational friction and deployment times",
           "Developed streamlined onboarding process enabling new team members to contribute effectively from week one",
@@ -77,7 +77,7 @@ function App() {
         titleColor: "text-job-head",
         achievements: [
           "Led successful migration from EC2/Docker Compose to GitOps with Kubernetes and ArgoCD across 16 global regions, significantly reducing operational costs",
-          "Managed infrastructure serving over 1 billion daily requests through the portal application across 17 regional EKS clusters",
+          "Managed infrastructure serving over 1 billion daily requests",
           "Orchestrated operations of 50+ blockchain clients including validators, seeds, and archival nodes for Ethereum, Polygon, BSC",
           "Led migration from DataDog to VictoriaMetrics/Loki/Grafana, drastically reducing observability costs",
           "Implemented comprehensive automation for node operations including key management, staking, and auto-upgrades",
@@ -233,7 +233,7 @@ function App() {
       {
         category: "Blockchain & Web3",
         skills: [
-          "Ethereum", "Arbitrum", "Layer 2/3", "Gas Network", "Geth", "Reth", "Erigon", "Polygon", "BSC", "Blockscout", "Smart Contracts", "Mempool Analysis", "RPC Infrastructure", "Transaction Monitoring"
+          "Ethereum", "Arbitrum", ""Layer 2/3", "Gas Network", "Geth", "Reth", "Erigon", "Polygon", "BSC", "Blockscout", "Smart Contracts", "Mempool Analysis", "RPC Infrastructure", "Transaction Monitoring"
         ]
       },
       {
@@ -257,7 +257,7 @@ function App() {
       {
         category: "Development & Architecture",
         skills: [
-          "Go", "Python", "TypeScript", "React", "Node.js", "GraphQL", "REST APIs", "Microservices", "System Design", "Performance Optimization"
+          "Go", "Python", "TypeScript", "Rust","React", "Node.js", "GraphQL", "REST APIs", "Microservices", "System Design", "Performance Optimization"
         ]
       },
       {
