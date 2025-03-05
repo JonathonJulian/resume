@@ -310,6 +310,7 @@ function App() {
                   title={resumeData.title}
                   profileImage={resumeData.profileImage}
                   summary={resumeData.summary}
+                  showTitle={false}
                   contact={resumeData.contact}
                 />
               </div>
