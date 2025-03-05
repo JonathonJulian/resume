@@ -48,7 +48,7 @@ function App() {
           "Led strategic transformation from mixed systemd/unikernel architecture to containerized infrastructure, achieving 100% Kubernetes adoption with ArgoCD-based GitOps workflows and a self-service model that reduced developer friction despite limited team size",
           "Implemented bare metal Kubernetes cluster using RKE2 on Latitude hardware with Cilium for CNI and network security, supporting high-performance Reth nodes",
           "Designed and implemented auto-scaling site-to-site connectivity solution, deploying Twingate Operator with AWS Gateway Load Balancer to achieve dynamic capacity management",
-          "Architected Arbitrum Orbit L3 devnet with 250ms blocktime, ensuring high availability while optimizing parent chain costs",
+          "Configured Arbitrum Orbit L3 devnet with 250ms blocktime, ensuring high availability while optimizing parent chain costs",
           "Deployed and maintained Gas Network infrastructure, a distributed oracle platform providing near real-time gas price data and predictions across 35+ blockchain networks",
           "Established Blockscout expertise for blockchain indexing, metrics collection, and smart contract verification",
           "Developed Go-based on-chain data exporter for wallet balances and transaction timestamps, enabling comprehensive blockchain monitoring in DataDog dashboards and alerts",
@@ -60,7 +60,6 @@ function App() {
           "Developed streamlined onboarding process enabling new team members to contribute effectively from week one",
           "Provided daily hands-on support and education to development team, establishing infrastructure best practices and improving team efficiency",
           "Managed mission-critical RDS infrastructure including Aurora PostgreSQL clusters, implementing automated snapshots, point-in-time recovery, and cross-region replication",
-          "Orchestrated database failover procedures and disaster recovery planning, maintaining high availability through read replicas and automated failover configurations",
           "Implemented nOPs and Kubecost for infrastructure cost analysis, leading team initiatives that reduced infrastructure spend by 40%"
         ]
       },
