@@ -32,7 +32,7 @@ function App() {
 
   const [resumeData] = useState({
     name: "Jonathon Fritz",
-    title: "Blockchain Infrastructure Specialist & Leader",
+    title: "Technologist & Leader",
     profileImage: "",
     summary: "Seasoned pro in building and scaling blockchain infrastructure, from bare-metal Kubernetes to web3 ecosystems. I fuse hands-on platform and software engineering with proven leadership—driving impactful solutions as an individual contributor or team lead.",
     showProjects: false,
@@ -45,9 +45,8 @@ function App() {
         description: "On-chain gas estimation infrastructure for Web3.",
         titleColor: "text-job-sre",
         achievements: [
-          "Led strategic transformation from mixed systemd/unikernel architecture to containerized infrastructure and eventually full Kubernetes adoption",
+          "Led strategic transformation from mixed systemd/unikernel architecture to containerized infrastructure, achieving 100% Kubernetes adoption with ArgoCD-based GitOps workflows and a self-service model that reduced developer friction despite limited team size",
           "Implemented bare metal Kubernetes cluster using RKE2 on Latitude hardware with Cilium for CNI and network security, supporting high-performance Reth nodes",
-          "Achieved 100% workload migration to Kubernetes despite limited team size, implementing ArgoCD for GitOps workflows and establishing a self-service infrastructure model that reduced operational friction for developers",
           "Designed and implemented auto-scaling site-to-site connectivity solution, deploying Twingate Operator with AWS Gateway Load Balancer to achieve dynamic capacity management",
           "Architected Arbitrum Orbit L3 devnet with 250ms blocktime, ensuring high availability while optimizing parent chain costs",
           "Deployed and maintained Gas Network infrastructure, a distributed oracle platform providing near real-time gas price data and predictions across 35+ blockchain networks",
