@@ -51,7 +51,7 @@ function App() {
           "Designed and implemented auto-scaling site-to-site connectivity solution, deploying Twingate Operator with AWS Gateway Load Balancer to achieve dynamic capacity management",
           "Architected robust Arbitrum Orbit L3 infrastructure with 250ms blocktime, implementing separated validator, batch poster, and full node components for high availability while optimizing parent chain costs through strategic batch posting",
           "Deployed and maintained Gas Network infrastructure, a distributed oracle platform providing near real-time gas price data and predictions across 35+ blockchain networks",
-          "Provided infrastructure support for Blockfetch service, enabling efficient MDBX data access from Reth nodes for the EtherNow data API",
+          "Provided infrastructure support for Blockfetch service, enabling efficient MDBX data access for the EtherNow data API",
           "Established Blockscout expertise for blockchain indexing, metrics collection, and smart contract verification",
           "Developed Go-based on-chain data exporter for wallet balances and transaction timestamps, enabling comprehensive blockchain monitoring in DataDog dashboards and alerts",
           "Led observability initiatives using DataDog, implementing OpenTelemetry, APM, and distributed tracing while optimizing log ingestion costs",
