@@ -47,7 +47,7 @@ function App() {
         achievements: [
           "Led strategic transformation from mixed systemd/unikernel architecture to containerized infrastructure and eventually full Kubernetes adoption",
           "Implemented bare metal Kubernetes cluster using RKE2 on Latitude hardware with Cilium for CNI and network security, supporting high-performance Reth nodes",
-          "Achieved 100% workload migration to Kubernetes despite limited team size, implementing ArgoCD for GitOps workflows",
+          "Achieved 100% workload migration to Kubernetes despite limited team size, implementing ArgoCD for GitOps workflows and establishing a self-service infrastructure model that reduced operational friction for developers",
           "Designed and implemented auto-scaling site-to-site connectivity solution, deploying Twingate Operator with AWS Gateway Load Balancer to achieve dynamic capacity management",
           "Architected robust Arbitrum Orbit L3 infrastructure with 250ms blocktime, implementing separated validator, batch poster, and full node components for high availability while optimizing parent chain costs through strategic batch posting",
           "Deployed and maintained Gas Network infrastructure, a distributed oracle platform providing near real-time gas price data and predictions across 35+ blockchain networks",
@@ -57,9 +57,7 @@ function App() {
           "Streamlined alert management across Slack and PagerDuty, implementing intelligent alert routing and reducing alert fatigue through correlation and actionable thresholds",
           "Enhanced system reliability through automated recovery procedures and proactive monitoring",
           "Demonstrated exceptional incident response capabilities through on-call rotation, rapidly debugging and resolving critical production issues",
-          "Implemented extensive GitHub Actions workflows for infrastructure automation and deployments before ArgoCD adoption, now maintaining streamlined container build pipelines",
           "Collaborated on HashiCorp Vault implementation, consolidating secrets from Ansible, GitHub, and 1Password into a unified management system, improving security posture and operational efficiency",
-          "Established self-service infrastructure model for developers, significantly reducing operational friction and deployment times",
           "Developed streamlined onboarding process enabling new team members to contribute effectively from week one",
           "Provided daily hands-on support and education to development team, establishing infrastructure best practices and improving team efficiency",
           "Managed mission-critical RDS infrastructure including Aurora PostgreSQL clusters, implementing automated snapshots, point-in-time recovery, and cross-region replication",
