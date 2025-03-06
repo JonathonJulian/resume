@@ -15,7 +15,10 @@ interface TerminalLine {
 // The terminal content with explicit types
 const TERMINAL_CONTENT: TerminalLine[] = [
   { type: 'aws', content: 'on arn:aws:eks:us-east-1:123456789012:cluster/prod ~ on main [!+?] is 📦 v1.0.0' },
-  { type: 'command', content: '❯ helm install jonathon-resume ./resume-chart' },
+  { type: 'command', content: '❯ helm repo add resume-repo https://jonathonfritz.github.io/resume-chart/' },
+  { type: 'output', content: '"resume-repo" has been added to your repositories' },
+  { type: 'empty', content: '' },
+  { type: 'command', content: '❯ helm install jonathon-resume resume-repo/resume-chart' },
   { type: 'output', content: 'NAME: jonathon-resume' },
   { type: 'output', content: 'LAST DEPLOYED: Tue Mar 04 14:35:21 2025' },
   { type: 'output', content: 'NAMESPACE: default' },
@@ -32,48 +35,46 @@ const TERMINAL_CONTENT: TerminalLine[] = [
   { type: 'command', content: '❯ open http://localhost:8080' }
 ];
 
-// Add a new interface to track animation state for each line
-interface VisibleLine {
-  content: string;
-  fadeIn: boolean;
-}
-
+// Completely new animation approach
 const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
-  // Terminal state
-  const [visibleLines, setVisibleLines] = useState<VisibleLine[]>([]);
-  const [typewriterText, setTypewriterText] = useState("");
-  const [typewriterComplete, setTypewriterComplete] = useState(true);
-  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  // Define all of our completed lines - this only includes fully rendered lines
+  const [completedLines, setCompletedLines] = useState<string[]>([TERMINAL_CONTENT[0].content]);
+
+  // Current line being animated
+  const [currentLine, setCurrentLine] = useState<string>('');
+
+  // Index in the content array
+  const [contentIndex, setContentIndex] = useState(1);
+
+  // Cursor state
   const [showCursor, setShowCursor] = useState(true);
-  // Add a flag to track if we're currently showing a typing animation
-  const [isTyping, setIsTyping] = useState(false);
 
-  // Refs
+  // Refs for cleanup
   const terminalRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<{timeouts: ReturnType<typeof setTimeout>[]}>(
-    {timeouts: []}
-  );
+  const timeoutsRef = useRef<number[]>([]);
 
-  // Clean up function
+  // Cleanup function
   const clearTimeouts = () => {
-    animationRef.current.timeouts.forEach(clearTimeout);
-    animationRef.current.timeouts = [];
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current = [];
   };
 
-  // Add timeout with tracking for cleanup
+  // Add a timeout with tracking
   const addTimeout = (callback: () => void, delay: number) => {
     const id = setTimeout(callback, delay);
-    animationRef.current.timeouts.push(id);
+    timeoutsRef.current.push(id);
     return id;
   };
 
-  // Initialize with AWS line on mount, only once
+  // Scroll terminal when content changes
   useEffect(() => {
-    // Start with the AWS line - it's always visible and never animated
-    setVisibleLines([{ content: TERMINAL_CONTENT[0].content, fadeIn: false }]);
-    setCurrentLineIndex(1); // Start processing from line 1
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [completedLines, currentLine]);
 
-    // Start cursor blinking
+  // Setup cursor blinking
+  useEffect(() => {
     const cursorInterval = setInterval(() => {
       setShowCursor(prev => !prev);
     }, 500);
@@ -84,84 +85,74 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
     };
   }, []);
 
-  // Effect for scrolling whenever content changes
-  useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
-  }, [visibleLines, typewriterText]);
-
   // Main animation effect
   useEffect(() => {
-    // Skip if we've processed all lines
-    if (currentLineIndex >= TERMINAL_CONTENT.length) {
+    if (contentIndex >= TERMINAL_CONTENT.length) {
       addTimeout(() => {
         onComplete();
       }, 2000);
       return;
     }
 
-    // Only start a new line animation if the previous one is complete
-    if (!typewriterComplete) return;
+    const line = TERMINAL_CONTENT[contentIndex];
 
-    const currentLine = TERMINAL_CONTENT[currentLineIndex];
-
-    // Process the current line based on its type
-    if (currentLine.type === 'command') {
-      // For commands, animate typing character by character
-      setTypewriterComplete(false);
-      setTypewriterText('');
-      setIsTyping(true); // Set typing state to true
-
+    if (line.type === 'command') {
+      // Animate typing the command character by character
+      setCurrentLine(''); // Start with empty
       let charIndex = 0;
-      const typingSpeed = 50; // slightly slower typing speed
-      const content = currentLine.content;
+      const content = line.content;
+      const typingSpeed = 50;
 
       const typeNextChar = () => {
         if (charIndex <= content.length) {
-          setTypewriterText(content.substring(0, charIndex));
+          setCurrentLine(content.substring(0, charIndex));
           charIndex++;
 
           if (charIndex <= content.length) {
             addTimeout(typeNextChar, typingSpeed);
           } else {
-            // Command typing finished
+            // Typing complete, move to next line
             addTimeout(() => {
-              // Add the completed command to visibleLines WITHOUT animation
-              // AND clear the typewriter text to prevent duplication
-              setVisibleLines(prev => [...prev, { content, fadeIn: false }]);
-              setTypewriterText('');
-              setIsTyping(false); // Reset typing state
-              setTypewriterComplete(true);
+              // Add the command to completed lines
+              setCompletedLines(prev => [...prev, content]);
+              // Clear current line
+              setCurrentLine('');
+              // Move to next content
 
-              // Add a consistent delay before starting the next line
-              addTimeout(() => {
-                setCurrentLineIndex(prev => prev + 1);
-              }, 300);
-            }, 100); // Shorter delay to prevent flash
+              // Add a longer delay after helm install to simulate longer processing time
+              if (content.includes('helm install')) {
+                addTimeout(() => {
+                  setContentIndex(prev => prev + 1);
+                }, 2000); // 2 second delay for helm install
+              } else {
+                // Regular commands proceed normally
+                setContentIndex(prev => prev + 1);
+              }
+            }, 400);
           }
         }
       };
 
-      // Start typing after a delay
+      // Start typing after delay
       addTimeout(typeNextChar, 400);
     }
-    else if (currentLine.type === 'output') {
-      // For output, add all at once with a fade-in effect
-      setVisibleLines(prev => [...prev, { content: currentLine.content, fadeIn: true }]);
-      // Add a consistent small delay between output lines
+    else if (line.type === 'output') {
+      // Add output line instantly
+      setCompletedLines(prev => [...prev, line.content]);
+      // Small delay before next line
       addTimeout(() => {
-        setCurrentLineIndex(prev => prev + 1);
+        setContentIndex(prev => prev + 1);
       }, 150);
     }
-    else if (currentLine.type === 'empty') {
-      // For empty lines, just add and continue with a small delay
-      setVisibleLines(prev => [...prev, { content: '', fadeIn: false }]);
+    else if (line.type === 'empty') {
+      // Add empty line
+      setCompletedLines(prev => [...prev, '']);
+      // Small delay before next line
       addTimeout(() => {
-        setCurrentLineIndex(prev => prev + 1);
+        setContentIndex(prev => prev + 1);
       }, 100);
     }
-  }, [currentLineIndex, typewriterComplete, onComplete]);
+  }, [contentIndex, onComplete]);
 
   return (
     <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4">
@@ -180,26 +171,26 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
           ref={terminalRef}
           className="terminal-content h-[358px] sm:h-[448px] md:h-[448px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
         >
-          {/* Display all completed lines */}
-          {visibleLines.map((line, i) => (
+          {/* Completed lines */}
+          {completedLines.map((line, i) => (
             <div
               key={`line-${i}`}
-              className={`text-gray-300 ${line.content === '' ? 'mb-2' : 'mb-0'} ${line.fadeIn ? 'animate-fadeIn' : ''}`}
+              className={`text-gray-300 ${line === '' ? 'mb-2' : 'mb-0'}`}
             >
-              {line.content}
+              {line}
             </div>
           ))}
 
-          {/* Display the line currently being typed - but ONLY if we're in typing state */}
-          {isTyping && typewriterText && (
+          {/* Currently typing line */}
+          {currentLine && (
             <div className="text-gray-300">
-              {typewriterText}
+              {currentLine}
               {showCursor && <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5"></span>}
             </div>
           )}
 
-          {/* Show cursor at the end when nothing is being typed and animation is complete */}
-          {!isTyping && !typewriterText && currentLineIndex >= TERMINAL_CONTENT.length && showCursor && (
+          {/* Final cursor */}
+          {!currentLine && contentIndex >= TERMINAL_CONTENT.length && showCursor && (
             <div className="text-gray-300">
               <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5"></span>
             </div>
