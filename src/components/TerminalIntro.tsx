@@ -111,7 +111,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
       setTypewriterText('');
 
       let charIndex = 0;
-      const typingSpeed = 40; // milliseconds per character
+      const typingSpeed = 50; // slightly slower typing speed
       const content = currentLine.content;
 
       const typeNextChar = () => {
@@ -124,20 +124,22 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
           } else {
             // Command typing finished, add to visible lines after a small pause
             addTimeout(() => {
-              setVisibleLines(prev => [...prev, { content, fadeIn: true }]);
+              // Add the completed command to visibleLines but WITHOUT animation
+              setVisibleLines(prev => [...prev, { content, fadeIn: false }]);
+              // Clear the typewriter text to prevent duplication
               setTypewriterText('');
               setTypewriterComplete(true);
               // Add a consistent delay before starting the next line
               addTimeout(() => {
                 setCurrentLineIndex(prev => prev + 1);
-              }, 150);
-            }, 200);
+              }, 300);
+            }, 300);
           }
         }
       };
 
       // Start typing after a delay
-      addTimeout(typeNextChar, 300);
+      addTimeout(typeNextChar, 400);
     }
     else if (currentLine.type === 'output') {
       // For output, add all at once with a fade-in effect
@@ -145,14 +147,14 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
       // Add a consistent small delay between output lines
       addTimeout(() => {
         setCurrentLineIndex(prev => prev + 1);
-      }, 80);
+      }, 150);
     }
     else if (currentLine.type === 'empty') {
       // For empty lines, just add and continue with a small delay
       setVisibleLines(prev => [...prev, { content: '', fadeIn: false }]);
       addTimeout(() => {
         setCurrentLineIndex(prev => prev + 1);
-      }, 40);
+      }, 100); // increased from 40ms
     }
   }, [currentLineIndex, typewriterComplete, onComplete]);
 
@@ -183,7 +185,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
             </div>
           ))}
 
-          {/* Display the line currently being typed */}
+          {/* Display the line currently being typed - only if it's not yet in visibleLines */}
           {typewriterText && (
             <div className="text-gray-300">
               {typewriterText}
