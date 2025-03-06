@@ -32,9 +32,15 @@ const TERMINAL_CONTENT: TerminalLine[] = [
   { type: 'command', content: '❯ open http://localhost:8080' }
 ];
 
+// Add a new interface to track animation state for each line
+interface VisibleLine {
+  content: string;
+  fadeIn: boolean;
+}
+
 const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
   // Terminal state
-  const [visibleLines, setVisibleLines] = useState<string[]>([]);
+  const [visibleLines, setVisibleLines] = useState<VisibleLine[]>([]);
   const [typewriterText, setTypewriterText] = useState("");
   const [typewriterComplete, setTypewriterComplete] = useState(true);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
@@ -62,7 +68,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
   // Initialize with AWS line on mount, only once
   useEffect(() => {
     // Start with the AWS line - it's always visible and never animated
-    setVisibleLines([TERMINAL_CONTENT[0].content]);
+    setVisibleLines([{ content: TERMINAL_CONTENT[0].content, fadeIn: false }]);
     setCurrentLineIndex(1); // Start processing from line 1
 
     // Start cursor blinking
@@ -118,10 +124,13 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
           } else {
             // Command typing finished, add to visible lines after a small pause
             addTimeout(() => {
-              setVisibleLines(prev => [...prev, content]);
+              setVisibleLines(prev => [...prev, { content, fadeIn: true }]);
               setTypewriterText('');
               setTypewriterComplete(true);
-              setCurrentLineIndex(prev => prev + 1);
+              // Add a consistent delay before starting the next line
+              addTimeout(() => {
+                setCurrentLineIndex(prev => prev + 1);
+              }, 150);
             }, 200);
           }
         }
@@ -131,14 +140,19 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
       addTimeout(typeNextChar, 300);
     }
     else if (currentLine.type === 'output') {
-      // For output, add all at once
-      setVisibleLines(prev => [...prev, currentLine.content]);
-      setCurrentLineIndex(prev => prev + 1);
+      // For output, add all at once with a fade-in effect
+      setVisibleLines(prev => [...prev, { content: currentLine.content, fadeIn: true }]);
+      // Add a consistent small delay between output lines
+      addTimeout(() => {
+        setCurrentLineIndex(prev => prev + 1);
+      }, 80);
     }
     else if (currentLine.type === 'empty') {
-      // For empty lines, just add and continue
-      setVisibleLines(prev => [...prev, '']);
-      setCurrentLineIndex(prev => prev + 1);
+      // For empty lines, just add and continue with a small delay
+      setVisibleLines(prev => [...prev, { content: '', fadeIn: false }]);
+      addTimeout(() => {
+        setCurrentLineIndex(prev => prev + 1);
+      }, 40);
     }
   }, [currentLineIndex, typewriterComplete, onComplete]);
 
@@ -163,9 +177,9 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
           {visibleLines.map((line, i) => (
             <div
               key={`line-${i}`}
-              className={`text-gray-300 ${line === '' ? 'mb-2' : 'mb-0'}`}
+              className={`text-gray-300 ${line.content === '' ? 'mb-2' : 'mb-0'} ${line.fadeIn ? 'animate-fadeIn' : ''}`}
             >
-              {line}
+              {line.content}
             </div>
           ))}
 
