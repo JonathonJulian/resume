@@ -23,15 +23,15 @@ const Skills: React.FC<SkillsProps> = ({ skills }) => {
       {skills.length === 0 ? (
         <p className="italic text-secondary">No skills data available.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-[1200px]">
           {skills.map((skill, index) => (
-            <div key={index} className="bg-[#1e1e1e] p-4 rounded-md border border-[#2a2a2a]">
-              <h3 className="text-lg font-medium text-gray-300 mb-3 pb-2 border-b border-[#333]">
+            <div key={index} className="bg-[#1e1e1e] p-5 md:p-6 rounded-md border border-[#2a2a2a]">
+              <h3 className="text-lg font-medium text-gray-300 mb-4 pb-2 border-b border-[#333]">
                 {skill.category}
               </h3>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2.5">
                 {skill.skills.map((item, i) => (
-                  <span key={i} className="px-2 py-1 bg-[#252525] text-gray-300 rounded-full text-sm border border-[#333]">
+                  <span key={i} className="px-3 py-1.5 bg-[#252525] text-gray-300 rounded-full text-sm border border-[#333]">
                     {item}
                   </span>
                 ))}

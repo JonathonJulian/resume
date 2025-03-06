@@ -302,7 +302,7 @@ function App() {
 
       {showContent && (
         <div className="bg-[#121212] text-white min-h-screen dark-resume fade-in">
-          <div className="container mx-auto px-3 py-7 max-w-[1300px] relative">
+          <div className="container mx-auto px-4 md:px-5 py-7 max-w-[1400px] relative">
             <div className="bg-[#1c1c1c] rounded-lg shadow-xl border border-[#2a2a2a] resume-glow">
               <div className="header-section">
                 <Header
@@ -315,14 +315,14 @@ function App() {
                 />
               </div>
 
-              <main className="p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                <div className="md:col-span-1">
+              <main className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8">
+                <div className="md:col-span-5 lg:col-span-4">
                   <div className="skills-section">
                     <Skills skills={resumeData.skills} />
                   </div>
                 </div>
 
-                <div className="md:col-span-2 space-y-6">
+                <div className="md:col-span-7 lg:col-span-8 space-y-6">
                   <div className="experience-section">
                     <Experience experiences={resumeData.experiences} />
                   </div>
