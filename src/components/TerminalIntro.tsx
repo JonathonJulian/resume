@@ -15,21 +15,21 @@ interface TerminalLine {
 // The terminal content with explicit types
 const TERMINAL_CONTENT: TerminalLine[] = [
   { type: 'aws', content: 'on arn:aws:eks:us-east-1:123456789012:cluster/prod ~ on main [!+?] is 📦 v1.0.0' },
-  { type: 'command', content: '❯ helm repo add resume-repo https://jonathonfritz.github.io/resume-chart/' },
-  { type: 'output', content: '"resume-repo" has been added to your repositories' },
+  { type: 'command', content: '❯ helm repo add jfritz https://jonathonfritz.github.io/resume/' },
+  { type: 'output', content: '"jfritz" has been added to your repositories' },
   { type: 'empty', content: '' },
-  { type: 'command', content: '❯ helm install jonathon-resume resume-repo/resume-chart' },
-  { type: 'output', content: 'NAME: jonathon-resume' },
+  { type: 'command', content: '❯ helm install resume jfritz/resume' },
+  { type: 'output', content: 'NAME: resume' },
   { type: 'output', content: 'LAST DEPLOYED: Tue Mar 04 14:35:21 2025' },
   { type: 'output', content: 'NAMESPACE: default' },
   { type: 'output', content: 'STATUS: deployed' },
   { type: 'output', content: 'REVISION: 1' },
   { type: 'empty', content: '' },
-  { type: 'command', content: '❯ kubectl get pod -l app=jonathon-resume' },
-  { type: 'output', content: 'NAME                                     READY     STATUS    RESTARTS   AGE' },
-  { type: 'output', content: 'jonathon-fritz-resume-6f7d9c7b8d-x2zs1   1/1       Running   0          42s' },
+  { type: 'command', content: '❯ kubectl get pod -l app=resume' },
+  { type: 'output', content: 'NAME                      READY     STATUS    RESTARTS   AGE' },
+  { type: 'output', content: 'resume-6f7d9c7b8d-x2zs1   1/1       Running   0          42s' },
   { type: 'empty', content: '' },
-  { type: 'command', content: '❯ kubectl port-forward jonathon-fritz-resume-6f7d9c7b8d-x2zs1 8080:80' },
+  { type: 'command', content: '❯ kubectl port-forward resume-6f7d9c7b8d-x2zs1 8080:80' },
   { type: 'output', content: 'Forwarding from 127.0.0.1:8080 -> 80' },
   { type: 'empty', content: '' },
   { type: 'command', content: '❯ open http://localhost:8080' }
@@ -51,7 +51,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
   // Refs for cleanup
   const terminalRef = useRef<HTMLDivElement>(null);
-  const timeoutsRef = useRef<number[]>([]);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Cleanup function
   const clearTimeouts = () => {
