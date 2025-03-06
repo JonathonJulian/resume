@@ -15,14 +15,6 @@ interface TerminalLine {
 // The terminal content with explicit types
 const TERMINAL_CONTENT: TerminalLine[] = [
   { type: 'aws', content: 'on arn:aws:eks:us-east-1:123456789012:cluster/prod ~ on main [!+?] is 📦 v1.0.0' },
-  { type: 'command', content: '❯ k get nodes' },
-  { type: 'output', content: 'NAME                STATUS    ROLES                      AGE    VERSION' },
-  { type: 'output', content: 'control0            Ready     control-plane,etcd,master  36d    v1.30.1+rke2r1' },
-  { type: 'output', content: 'worker0             Ready     <none>                     36d    v1.30.1+rke2r1' },
-  { type: 'empty', content: '' },
-  { type: 'command', content: '❯ helm list' },
-  { type: 'output', content: 'No releases found in default namespace.' },
-  { type: 'empty', content: '' },
   { type: 'command', content: '❯ helm install jonathon-resume ./resume-chart' },
   { type: 'output', content: 'NAME: jonathon-resume' },
   { type: 'output', content: 'LAST DEPLOYED: Tue Mar 04 14:35:21 2025' },
@@ -171,7 +163,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
           {visibleLines.map((line, i) => (
             <div
               key={`line-${i}`}
-              className={`${line.startsWith('on arn:aws') ? 'text-gray-300' : line.startsWith('❯') ? 'text-gray-300' : 'text-gray-500'} ${line === '' ? 'mb-2' : 'mb-0'}`}
+              className={`text-gray-300 ${line === '' ? 'mb-2' : 'mb-0'}`}
             >
               {line}
             </div>
