@@ -26,8 +26,8 @@ const TERMINAL_CONTENT: TerminalLine[] = [
   { type: 'output', content: 'REVISION: 1' },
   { type: 'empty', content: '' },
   { type: 'command', content: '❯ kubectl get pod -l app=jonathon-resume' },
-  { type: 'output', content: 'NAME                                 READY   STATUS    RESTARTS   AGE' },
-  { type: 'output', content: 'jonathon-fritz-resume-6f7d9c7b8d-x2zs1   1/1     Running   0          42s' },
+  { type: 'output', content: 'NAME                                     READY     STATUS    RESTARTS   AGE' },
+  { type: 'output', content: 'jonathon-fritz-resume-6f7d9c7b8d-x2zs1   1/1       Running   0          42s' },
   { type: 'empty', content: '' },
   { type: 'command', content: '❯ kubectl port-forward jonathon-fritz-resume-6f7d9c7b8d-x2zs1 8080:80' },
   { type: 'output', content: 'Forwarding from 127.0.0.1:8080 -> 80' },
@@ -123,7 +123,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
               if (content.includes('helm install')) {
                 addTimeout(() => {
                   setContentIndex(prev => prev + 1);
-                }, 2000); // 2 second delay for helm install
+                }, 3500); // 3.5 second delay for helm install
               } else {
                 // Regular commands proceed normally
                 setContentIndex(prev => prev + 1);
