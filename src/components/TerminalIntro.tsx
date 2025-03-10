@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import '../styles/terminal-animations.css';
 
 interface TerminalIntroProps {
   onComplete: () => void;
@@ -66,6 +67,14 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
     return isMobile.current ? 250 : 150; // Longer delay on mobile
   }, []);
 
+  // Set body class when terminal is active
+  useEffect(() => {
+    document.body.classList.add('terminal-active');
+    return () => {
+      document.body.classList.remove('terminal-active');
+    };
+  }, []);
+
   // Cleanup function
   const clearTimeouts = () => {
     timeoutsRef.current.forEach(clearTimeout);
@@ -86,16 +95,23 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
     return id;
   };
 
-  // Scroll terminal when content changes
+  // Scroll terminal when content changes - deferred and throttled
   useEffect(() => {
-    if (terminalRef.current) {
-      // Use requestAnimationFrame for smoother scrolling
+    if (!terminalRef.current) return;
+
+    // Debounce scroll to reduce layout thrashing
+    const scrollTimeout = setTimeout(() => {
       requestAnimationFrame(() => {
         if (terminalRef.current) {
-          terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+          terminalRef.current.scrollTo({
+            top: terminalRef.current.scrollHeight,
+            behavior: isMobile.current ? 'auto' : 'smooth'
+          });
         }
       });
-    }
+    }, 10);
+
+    return () => clearTimeout(scrollTimeout);
   }, [completedLines, currentLine]);
 
   // Blink cursor
@@ -196,9 +212,9 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
   }, [contentIndex, onComplete, getTypingSpeed, getLineDelay]);
 
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4 overscroll-none">
-      <div className="w-full max-w-[1050px] bg-black text-gray-400 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn shadow-xl border border-gray-700">
-        <div className="terminal-header flex items-center justify-between p-2 sm:p-3 bg-gray-900 border-b border-gray-800">
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4 overscroll-none hw-accelerated">
+      <div className="w-full max-w-[1050px] bg-black text-gray-400 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn shadow-xl border border-gray-700 flex flex-col hw-accelerated">
+        <div className="terminal-header flex items-center justify-between p-2 sm:p-3 bg-gray-900 border-b border-gray-800 flex-shrink-0">
           <div className="flex space-x-2">
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
@@ -210,36 +226,42 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
         <div
           ref={terminalRef}
-          className="terminal-content h-[300px] sm:h-[358px] md:h-[448px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar overscroll-none will-change-transform"
+          className="terminal-content h-[70vh] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar overscroll-none will-change-transform flex-grow"
           style={{
             WebkitOverflowScrolling: 'touch',
-            transform: 'translateZ(0)'
+            transform: 'translateZ(0)',
+            position: 'relative'
           }}
         >
-          {/* Completed lines */}
-          {completedLines.map((line, i) => (
-            <div
-              key={`line-${i}`}
-              className={`text-gray-300 ${line === '' ? 'mb-2' : 'mb-0'} will-change-transform`}
-            >
-              {line}
-            </div>
-          ))}
+          <div className="absolute inset-0 p-4">
+            {/* Completed lines - stabilized with min-height */}
+            {completedLines.map((line, i) => (
+              <div
+                key={`line-${i}`}
+                className={`terminal-text ${line === '' ? 'mb-2' : 'mb-0'}`}
+              >
+                {line}
+              </div>
+            ))}
 
-          {/* Currently typing line */}
-          {currentLine && (
-            <div className="text-gray-300 will-change-transform">
-              {currentLine}
-              {showCursor && <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5"></span>}
-            </div>
-          )}
+            {/* Currently typing line - reserved area */}
+            {currentLine && (
+              <div className="terminal-text">
+                {currentLine}
+                {showCursor && <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5 cursor-blink"></span>}
+              </div>
+            )}
 
-          {/* Final cursor */}
-          {!currentLine && contentIndex >= TERMINAL_CONTENT.length && showCursor && (
-            <div className="text-gray-300">
-              <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5"></span>
-            </div>
-          )}
+            {/* Final cursor */}
+            {!currentLine && contentIndex >= TERMINAL_CONTENT.length && (
+              <div className="terminal-text">
+                <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5 cursor-blink"></span>
+              </div>
+            )}
+
+            {/* Added empty spacer to ensure scroll area is consistently large */}
+            <div style={{ height: '30vh' }}></div>
+          </div>
         </div>
       </div>
 
