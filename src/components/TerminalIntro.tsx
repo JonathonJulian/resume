@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface TerminalIntroProps {
   onComplete: () => void;
@@ -53,6 +53,19 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
   const terminalRef = useRef<HTMLDivElement>(null);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
+  // Performance optimization for mobile
+  const isMobile = useRef(window.innerWidth < 768);
+
+  // Calculate typing speed based on device
+  const getTypingSpeed = useCallback(() => {
+    return isMobile.current ? 70 : 50; // Slower on mobile
+  }, []);
+
+  // Calculate delay between lines based on device
+  const getLineDelay = useCallback(() => {
+    return isMobile.current ? 250 : 150; // Longer delay on mobile
+  }, []);
+
   // Cleanup function
   const clearTimeouts = () => {
     timeoutsRef.current.forEach(clearTimeout);
@@ -61,7 +74,14 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
   // Add a timeout with tracking
   const addTimeout = (callback: () => void, delay: number) => {
-    const id = setTimeout(callback, delay);
+    const id = setTimeout(() => {
+      // Wrap callback in requestAnimationFrame for smoother rendering
+      if (typeof window !== 'undefined') {
+        window.requestAnimationFrame(callback);
+      } else {
+        callback();
+      }
+    }, delay);
     timeoutsRef.current.push(id);
     return id;
   };
@@ -69,23 +89,40 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
   // Scroll terminal when content changes
   useEffect(() => {
     if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+      // Use requestAnimationFrame for smoother scrolling
+      requestAnimationFrame(() => {
+        if (terminalRef.current) {
+          terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+        }
+      });
     }
   }, [completedLines, currentLine]);
 
-  // Setup cursor blinking
+  // Blink cursor
   useEffect(() => {
-    const cursorInterval = setInterval(() => {
+    const id = setInterval(() => {
       setShowCursor(prev => !prev);
-    }, 500);
+    }, 530);
 
-    return () => {
-      clearInterval(cursorInterval);
-      clearTimeouts();
-    };
+    return () => clearInterval(id);
   }, []);
 
-  // Main animation effect
+  // Cleanup on unmount
+  useEffect(() => {
+    return clearTimeouts;
+  }, []);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      isMobile.current = window.innerWidth < 768;
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Main animation logic
   useEffect(() => {
     if (contentIndex >= TERMINAL_CONTENT.length) {
       addTimeout(() => {
@@ -101,7 +138,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
       setCurrentLine(''); // Start with empty
       let charIndex = 0;
       const content = line.content;
-      const typingSpeed = 50;
+      const typingSpeed = getTypingSpeed();
 
       const typeNextChar = () => {
         if (charIndex <= content.length) {
@@ -123,7 +160,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
               if (content.includes('helm install')) {
                 addTimeout(() => {
                   setContentIndex(prev => prev + 1);
-                }, 3500); // 3.5 second delay for helm install
+                }, isMobile.current ? 2500 : 3500); // Shorter delay on mobile
               } else {
                 // Regular commands proceed normally
                 setContentIndex(prev => prev + 1);
@@ -137,25 +174,29 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
       addTimeout(typeNextChar, 400);
     }
     else if (line.type === 'output') {
-      // Add output line instantly
-      setCompletedLines(prev => [...prev, line.content]);
-      // Small delay before next line
+      // Add output line all at once (no animation needed)
       addTimeout(() => {
-        setContentIndex(prev => prev + 1);
-      }, 150);
+        setCompletedLines(prev => [...prev, line.content]);
+        // Small delay before next line
+        addTimeout(() => {
+          setContentIndex(prev => prev + 1);
+        }, getLineDelay());
+      }, 16); // Use requestAnimationFrame timing (roughly 16ms)
     }
     else if (line.type === 'empty') {
       // Add empty line
-      setCompletedLines(prev => [...prev, '']);
-      // Small delay before next line
       addTimeout(() => {
-        setContentIndex(prev => prev + 1);
-      }, 100);
+        setCompletedLines(prev => [...prev, '']);
+        // Small delay before next line
+        addTimeout(() => {
+          setContentIndex(prev => prev + 1);
+        }, getLineDelay() / 2); // Even shorter delay for empty lines
+      }, 16);
     }
-  }, [contentIndex, onComplete]);
+  }, [contentIndex, onComplete, getTypingSpeed, getLineDelay]);
 
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4">
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 p-2 sm:p-4 overscroll-none">
       <div className="w-full max-w-[1050px] bg-black text-gray-400 rounded-md font-mono text-xs sm:text-sm md:text-base overflow-hidden animate-fadeIn shadow-xl border border-gray-700">
         <div className="terminal-header flex items-center justify-between p-2 sm:p-3 bg-gray-900 border-b border-gray-800">
           <div className="flex space-x-2">
@@ -169,13 +210,17 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
         <div
           ref={terminalRef}
-          className="terminal-content h-[358px] sm:h-[448px] md:h-[448px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar"
+          className="terminal-content h-[300px] sm:h-[358px] md:h-[448px] overflow-y-auto p-4 bg-gray-900 rounded terminal-scrollbar overscroll-none will-change-transform"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            transform: 'translateZ(0)'
+          }}
         >
           {/* Completed lines */}
           {completedLines.map((line, i) => (
             <div
               key={`line-${i}`}
-              className={`text-gray-300 ${line === '' ? 'mb-2' : 'mb-0'}`}
+              className={`text-gray-300 ${line === '' ? 'mb-2' : 'mb-0'} will-change-transform`}
             >
               {line}
             </div>
@@ -183,7 +228,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
 
           {/* Currently typing line */}
           {currentLine && (
-            <div className="text-gray-300">
+            <div className="text-gray-300 will-change-transform">
               {currentLine}
               {showCursor && <span className="inline-block w-2 h-4 bg-gray-500 ml-0.5"></span>}
             </div>
@@ -203,7 +248,7 @@ const TerminalIntro: React.FC<TerminalIntroProps> = ({ onComplete }) => {
           clearTimeouts();
           onComplete();
         }}
-        className="fixed bottom-6 right-6 bg-gray-900 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-md transition-colors duration-200 border border-gray-700"
+        className="fixed bottom-6 right-6 bg-gray-900 hover:bg-gray-800 text-gray-400 px-4 py-2 rounded-md transition-colors duration-200 border border-gray-700 touch-manipulation"
       >
         Skip Intro
       </button>
