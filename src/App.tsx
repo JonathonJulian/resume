@@ -92,7 +92,7 @@ function App() {
         titleColor: "text-job-lead",
         achievements: [
           "Promoted to lead the DevOps team after demonstrating technical excellence in blockchain operations",
-          "Led implementation of infrastructure as code for provisioning diverse blockchain nodes",
+          "Led implementation of infrastructure as code for provisioning of diverse blockchain nodes",
           "Coordinated team efforts to optimize blockchain client configurations for improved performance",
           "Designed CI/CD pipelines for rapid deployment of infrastructure updates",
           "Mentored junior engineers on blockchain infrastructure best practices and protocols"
